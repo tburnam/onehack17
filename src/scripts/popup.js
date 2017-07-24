@@ -18,7 +18,7 @@ var template = (data) => {
     <a href="${data.url}" target="_blank" class="url">${data.url}</a>
   </div>
   <div class="action-container">
-    <button data-bookmark='${json}' id="save-btn" class="btn btn-primary">Save</button>
+    <button data-bookmark='${json}' onClick='${() => {console.log("hello!")}}' id="save-btn" class="btn btn-primary">Create entity</button>
   </div>
   `);
 }
@@ -31,7 +31,7 @@ var renderBookmark = (data) => {
   var displayContainer = document.getElementById("display-container")
   if(data) {
     var tmpl = template(data);
-    displayContainer.innerHTML = tmpl;  
+    displayContainer.innerHTML = tmpl;
   } else {
     renderMessage("Sorry, could not extract this page's title and URL")
   }
@@ -46,7 +46,7 @@ popup.addEventListener("click", function(e) {
   if(e.target && e.target.matches("#save-btn")) {
     e.preventDefault();
     var data = e.target.getAttribute("data-bookmark");
-    ext.runtime.sendMessage({ action: "perform-save", data: data }, function(response) {
+    ext.runtime.sendMessage({ action: "create-entity", data: data }, function(response) {
       if(response && response.action === "saved") {
         renderMessage("Your bookmark was saved successfully!");
       } else {
