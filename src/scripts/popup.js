@@ -1,6 +1,7 @@
 import ext from "./utils/ext";
 import storage from "./utils/storage";
 
+console.log("First load")
 var popup = document.getElementById("app");
 storage.get('color', function(resp) {
   var color = resp.color;
@@ -13,9 +14,8 @@ var template = (data) => {
   var json = JSON.stringify(data);
   return (`
   <div class="site-description">
-    <h3 class="title">${data.title}</h3>
-    <p class="description">${data.description}</p>
-    <a href="${data.url}" target="_blank" class="url">${data.url}</a>
+    <h3 class="title">Choose an entity:</h3>
+    <p class="description">this will one day be a selection box</p>
   </div>
   <div class="action-container">
     <button data-bookmark='${json}' onClick='${() => {console.log("hello!")}}' id="save-btn" class="btn btn-primary">Create entity</button>
@@ -33,7 +33,7 @@ var renderBookmark = (data) => {
     var tmpl = template(data);
     displayContainer.innerHTML = tmpl;
   } else {
-    renderMessage("Sorry, could not extract this page's title and URL")
+    renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...")
   }
 }
 
@@ -48,9 +48,9 @@ popup.addEventListener("click", function(e) {
     var data = e.target.getAttribute("data-bookmark");
     ext.runtime.sendMessage({ action: "create-entity", data: data }, function(response) {
       if(response && response.action === "saved") {
-        renderMessage("Your bookmark was saved successfully!");
+        renderMessage("Your entity was not created! Good luck doing it manually loser");
       } else {
-        renderMessage("Sorry, there was an error while saving your bookmark.");
+        renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...");
       }
     })
   }
