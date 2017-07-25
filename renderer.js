@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 function test() {
   var Horseman = require('node-horseman');
-  var horseman = new Horseman({phantomPath: "./spectrejs"});
+  var horseman = new Horseman({phantomPath: "phantomjs.exe"});
 
   horseman
     .authentication('Administrator', 'T!T@n1130')
