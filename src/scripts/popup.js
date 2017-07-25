@@ -11,9 +11,10 @@ storage.get('color', function(resp) {
   }
 });
 
+// TODO: Take these values from the DB file
 var LoadEntityMenu = () => {
   return (`
-  <select>
+  <select id="entitySelection">
     <option value="Account">Account</option>
     <option value="Work Order">Work Order</option>
     <option value="Product">Product</option>
@@ -28,10 +29,21 @@ var dialog = () => {
   <div class="site-description">
     <h3 class="title">Choose an entity:</h3>
     ${LoadEntityMenu()}
-    <p class="description">this will one day be a selection box</p>
   </div>
   <div class="action-container">
-    <button id="save-btn" class="btn btn-primary">Create entity</button>
+    <button id="select-entity-btn" class="btn btn-primary">Select entity</button>
+  </div>
+  `);
+}
+
+var form = (entityName) => {
+  return (`
+  <div class="site-description">
+    <h3 class="title">Create: ${entityName}</h3>
+    <p class="description">this will one day be a form</p>
+  </div>
+  <div class="action-container">
+    <button id="create-entity-btn" class="btn btn-primary">Build entity</button>
   </div>
   `);
 }
@@ -43,34 +55,63 @@ var renderMessage = (message) => {
 }
 
 // Callback to modify UI after executing action
-var renderBookmark = (data) => {
-  debugger
+var renderDialog = () => {
+  console.log("hello")
   var displayContainer = document.getElementById("display-container")
-  if(data) {
-    var tmpl = dialog();
-    displayContainer.innerHTML = tmpl;
+
+  if (displayContainer) {
+    var content = dialog();
+    displayContainer.innerHTML = content;
   } else {
-    renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...")
+    renderMessage("Sorry, your alread buggy software hit an unsupported flow. Good going...")
   }
 }
-debugger
-renderBookmark(1)
-loadAutoComplete()
+
+var renderCreateForm = (entityName) => {
+  var displayContainer = document.getElementById("display-container")
+
+  if (displayContainer) {
+    var content = form(entityName);
+    displayContainer.innerHTML = content;
+  } else {
+    renderMessage("Sorry, your aleady buggy software hit an unsupported flow. Good going...")
+  }
+}
+
+// Load step
+renderDialog()
 
 // ext.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //   console.log("click")
 //   var activeTab = tabs[0];
-//   chrome.tabs.sendMessage(activeTab.id, { action: 'process-page' }, renderBookmark);
+//   chrome.tabs.sendMessage(activeTab.id, { action: 'process-page' }, renderDialog);
 // });
 
-// Adds an event handler for #create-entity
+// Selected entity, retrieve form attributes
 popup.addEventListener("click", function(e) {
-  if(e.target && e.target.matches("#save-btn")) {
+  debugger
+  if(e.target && e.target.matches("#select-entity-btn")) {
     e.preventDefault();
-    var data = e.target.getAttribute("data-bookmark");
-    ext.runtime.sendMessage({ action: "create-entity", data: data }, function(response) {
-      if(response && response.action === "saved") {
-        renderMessage("Your entity was not created! Good luck doing it manually loser");
+
+    ext.runtime.sendMessage({ action: "create-entity", data: {test:"test"} }, function(response) {
+      if (response && response.action === "saved") {
+        var selection = document.getElementById('entitySelection');
+        renderCreateForm(selection.value)
+      } else {
+        renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...");
+      }
+    })
+  }
+});
+
+// Selected create entity, built entity
+popup.addEventListener("click", function(e) {
+  if(e.target && e.target.matches("#create-entity-btn")) {
+    e.preventDefault();
+
+    ext.runtime.sendMessage({ action: "create-entity", data: {test:"test"} }, function(response) {
+      if (response && response.action === "saved") {
+        renderMessage("Lazy developers need to get it together");
       } else {
         renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...");
       }
