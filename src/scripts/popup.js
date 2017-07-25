@@ -11,6 +11,7 @@ storage.get('color', function(resp) {
   }
 });
 
+
 // This is the jsx for the popup window
 var dialog = (data) => {
   var json = JSON.stringify(data);
@@ -33,6 +34,7 @@ var renderMessage = (message) => {
 
 // Callback to modify UI after executing action
 var renderBookmark = (data) => {
+  debugger
   var displayContainer = document.getElementById("display-container")
   if(data) {
     var tmpl = dialog(data);
@@ -43,6 +45,7 @@ var renderBookmark = (data) => {
 }
 
 ext.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  console.log("click")
   var activeTab = tabs[0];
   chrome.tabs.sendMessage(activeTab.id, { action: 'process-page' }, renderBookmark);
 });

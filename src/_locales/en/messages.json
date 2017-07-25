@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "Ext Starter",
-    "description": "The name of the extension."
+    "message": "Dynamics CRM Entity Builder",
+    "description": "Browser extension to build entities is Dynamics CRM"
   },
   "appDescription": {
-    "message": "Boilerplate for building cross browser extensions",
-    "description": "The description of the extension."
+    "message": "description",
+    "description": "description"
   },
   "btnTooltip": {
-    "message": "Ext Starter",
-    "description": "Tooltip for the button."
+    "message": "Dynamics CRM Entity Builder",
+    "description": "Entity builder tooltip"
   }
 }
