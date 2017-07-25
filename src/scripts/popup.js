@@ -1,8 +1,9 @@
 import ext from "./utils/ext";
 import storage from "./utils/storage";
 
-console.log("First load")
+
 var popup = document.getElementById("app");
+
 storage.get('color', function(resp) {
   var color = resp.color;
   if(color) {
@@ -10,7 +11,8 @@ storage.get('color', function(resp) {
   }
 });
 
-var template = (data) => {
+// This is the jsx for the popup window
+var dialog = (data) => {
   var json = JSON.stringify(data);
   return (`
   <div class="site-description">
@@ -22,15 +24,18 @@ var template = (data) => {
   </div>
   `);
 }
+
+// Utility method to send text to the #display-container
 var renderMessage = (message) => {
   var displayContainer = document.getElementById("display-container");
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
 }
 
+// Callback to modify UI after executing action
 var renderBookmark = (data) => {
   var displayContainer = document.getElementById("display-container")
   if(data) {
-    var tmpl = template(data);
+    var tmpl = dialog(data);
     displayContainer.innerHTML = tmpl;
   } else {
     renderMessage("Sorry, your already buggy software hit an unsupported flow. Good going...")
@@ -42,6 +47,7 @@ ext.tabs.query({active: true, currentWindow: true}, function(tabs) {
   chrome.tabs.sendMessage(activeTab.id, { action: 'process-page' }, renderBookmark);
 });
 
+// Adds an event handler for #create-entity
 popup.addEventListener("click", function(e) {
   if(e.target && e.target.matches("#save-btn")) {
     e.preventDefault();
@@ -56,6 +62,7 @@ popup.addEventListener("click", function(e) {
   }
 });
 
+// Displays options link on bottom of dialog
 var optionsLink = document.querySelector(".js-options");
 optionsLink.addEventListener("click", function(e) {
   e.preventDefault();
