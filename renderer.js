@@ -2,9 +2,6 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 function test() {
-  var os = require('os').release()
-  console.log(os)
-  debugger
 
   var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   var phantomPath = "./binaries/spectrejs"
