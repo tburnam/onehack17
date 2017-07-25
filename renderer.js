@@ -2,8 +2,18 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 function test() {
+  var os = require('os').release()
+  console.log(os)
+  debugger
+
+  var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  var phantomPath = "./binaries/spectrejs"
+  if (!isMac) {
+    phantomPath = "phantomjs.exe"
+  }
+
   var Horseman = require('node-horseman');
-  var horseman = new Horseman({phantomPath: "phantomjs.exe"});
+  var horseman = new Horseman({phantomPath: phantomPath});
 
   horseman
     .authentication('Administrator', 'T!T@n1130')
