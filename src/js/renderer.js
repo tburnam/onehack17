@@ -5,8 +5,7 @@
 document.crmDataStore = {}
 document.jsToAttributeRegister = {}
 
-
-document.crmDataStore = {"Name":"return [\"tyler\", \"alan\"]"}
+document.entityData = {"name": ["Alan, Tyler"]};
 
 // Loads a selection box with given list
 function loadEntrypoint(entities) {
@@ -22,7 +21,16 @@ function loadEntrypoint(entities) {
 // Calls when a selection is made from the entity drop down
 function selectEntity(e) {
   var selectedEntity = document.getElementById("selectEntityDrop").value;
+  saveSelectedEntity(selectedEntity);
   retrieveRequiredAttributesUsingWebAPI(selectedEntity);
+}
+
+function saveSelectedEntity(entityId) {
+  document.entities.forEach(function(element) {
+    if(element.id === entityId) {
+      document.selectedEntity = element;
+    }
+  });
 }
 
 function loadForm(requiredFields){
@@ -47,21 +55,43 @@ function checkForSubmit() {
 // Returns HTML for a form given an entity name
 function createForm(requiredFields) {
 
-  var form = "";
+  var form = "<h3>Required fields for " + document.selectedEntity.name + "</h3><br>";
   requiredFields.forEach(function(element) {
     // Update data store
     document.crmDataStore[element] = null
 
     form = form + createInput(element)
   })
-  form = form + "Qty:<br><form><input type=\"number\"><br><input type=\"submit\"></form>"
+  form = form + "Qty:<br><input id='qtyNumber' type=\"number\"><br><button type=\"submit\" onclick='createEntities()'>Submit</button>"
   return form
+}
+
+function validateRequiredFields() {
+  for (field in document.crmDataStore){
+    if (document.crmDataStore[field] === null || document.crmDataStore[field] === 'undefined'){
+      return false;
+    }
+  }
+  return true;
+}
+
+function createEntities() {
+  var qty = document.getElementById("qtyNumber").value;
+  // if (!validateRequiredFields()){
+  //   alert("Please complete the required fields.")
+  //   return;
+  // }
+  for (var i = 0; i < qty; i++ ){
+    for (field in document.entityData){
+
+    }
+  }
 }
 
 // Utility method to create a form input line
 function createInput(item) {
   // " type: " + item.type + " Save as: " + item.logicalName
-  return item.displayName + " (" + item.type + ") | <button onClick=openJS(this)>Add JS</button><br>"
+  return item.displayName + " (" + item.type + ") | <button value='" + item.logicalName +"' onClick=openJS(this)>Add JS</button><br>"
 }
 
 function openJS(a) {
