@@ -9,7 +9,16 @@
     <div id="body">
       <img id="crm" src="../images/logo.png" />
       <h1 id="title">Dynamics CRM Entity Builder</h1>
-      <div id="main-container"></div>
+      <div id="main-container">
+        Please add your CRM login <br>
+        URL:
+        <input type="text" id="clientUrl" value="http://10.125.185.231/contoso"><br>
+        username:
+        <input type="text" id="clientUsername" value="Administrator"><br>
+        password:
+        <input type="password" id="clientPassword" value="T!T@n1130"><br>
+        <button onclick="validateUser()">Validate</button>
+      </div>
     </div>
   </body>
   <footer>
@@ -20,6 +29,7 @@
 
   <script>
     // You can also require other files to run in this process
+    require('../js/entityToolKit.js')
     require('../js/renderer.js')
 
   </script>
