@@ -11,7 +11,7 @@ function createAccountUsingWebAPI() {
         var accountUri = this.getResponseHeader("OData-EntityId");
     };
     var body = JSON.stringify({
-        "name": "Tyler",
+        "name": "Panchiiiiii",
         "creditonhold": false,
         "address1_latitude": 47.639583,
         "description": "This is the description of the sample account",

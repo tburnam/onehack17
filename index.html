@@ -6,8 +6,18 @@
     <title>Dynamics CRM Entity Builder</title>
   </head>
   <body>
-    <h1>Dynamics CRM Entity Builder</h1>
-    <button onclick="test()">Test</button>
+    <div id="mainContainer">
+      <h1>Dynamics CRM Entity Builder</h1>
+      Please add your CRM login <br>
+      URL:
+      <input type="text" id="clientUrl" value="http://10.125.185.231/contoso"><br>
+      username:
+      <input type="text" id="clientUsername" value="Administrator"><br>
+      password:
+      <input type="password" id="clientPassword" value="T!T@n1130"><br>
+    
+      <button onclick="validateUser()">Validate</button>
+    </div>
   </body>
 
   <script>
