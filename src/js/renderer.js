@@ -26,17 +26,60 @@ function loadForm(entity) {
   // TODO: Get required fields
   requiredFields = ["Name", "Country", "Phone Number", "Type Code"]
 
-  var form = "<form>"
+  var form = ""
   requiredFields.forEach(function(element) {
     form = form + createInput(element)
   })
-  form = form + "Qty:<br><input type=\"number\"><br><input type=\"submit\"></form>"
+  form = form + "Qty:<br><form><input type=\"number\"><br><input type=\"submit\"></form>"
   return form
 }
 
+// Editor
+// <pre id="editor">function foo(items) {
+//     var i;
+//     for (i = 0; i &lt; items.length; i++) {
+//         alert("Ace Rocks " + items[i]);
+//     }
+// }</pre>
+// <script src="../../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+// <script>
+//     var editor = ace.edit("editor");
+//     editor.setTheme("ace/theme/monokai")
+//     editor.session.setMode("ace/mode/javascript");
+// </script>
+
 // Utility method to create a form input line
 function createInput(item) {
-  return item + ":<br><div id=\"input\"><input type=\"text\" name=" + item + "><input type=\"radio\"><div id=\"random\">Random?</div><br>"
+  return item + " | <button onClick=openJS(this)>Add JS</button><br>"
+}
+
+function openJS(a) {
+  const path = require('path');
+  const url = require('url')
+
+  const remote = require('electron').remote;
+  const BrowserWindow = remote.BrowserWindow;
+  var jsPopup = new BrowserWindow({ width: 400, height: 600 });
+
+  jsPopup.webContents.on('did-finish-load', ()=>{
+   jsPopup.show();
+   jsPopup.focus();
+  });
+
+  // and load the index.html of the app.
+  jsPopup.loadURL(url.format({
+    pathname: path.join(__dirname, '../html/js.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  // Emitted when the window is closed.
+  jsPopup.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    jsPopup = null
+  })
 }
 
 

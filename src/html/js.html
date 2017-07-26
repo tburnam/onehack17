@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Dynamics CRM Entity Builder JS Command</title>
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+  </head>
+  <body>
+    <pre id="editor">
+// This is a boilerplate method signature
+// Your method should return a List of N elements
+function generate() {
+  const numberOfRecordsToCreate = 10;
+  const records = []
+
+  for (i = 0; i &lt; numberOfRecordsToCreate; i++) {
+      records.add(i);
+  }
+
+  return records
+}</pre>
+    <script src="../../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai")
+        editor.session.setMode("ace/mode/javascript");
+    </script>
+  </body>
+  <footer>
+  </footer>
+</html>
