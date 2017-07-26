@@ -3,6 +3,8 @@
 // All of the Node.js APIs are available in this process.
 
 // ENTRY POINT
+document.crmDataStore = {}
+
 // Loads a selection box with given list
 var entities = ["Account", "Work order", "Sale", "Product"]
 var options = "<center><select>"
@@ -20,14 +22,28 @@ function selectEntity(e) {
   document.getElementsByTagName('body')[0].focus();
 }
 
+function checkForSubmit() {
+  for (var key in document.crmDataStore) {
+    if (document.crmDataStore.hasOwnProperty(key)) {
+      if (document.crmDataStore[key] == null) {
+        return false;
+      }
+    }
+  }
+  return true
+}
+
 // Returns HTML for a form given an entity name
 function loadForm(entity) {
 
   // TODO: Get required fields
   requiredFields = ["Name", "Country", "Phone Number", "Type Code"]
 
-  var form = ""
+  var form = "";
   requiredFields.forEach(function(element) {
+    // Update data store
+    document.crmDataStore[element] = null
+
     form = form + createInput(element)
   })
   form = form + "Qty:<br><form><input type=\"number\"><br><input type=\"submit\"></form>"
