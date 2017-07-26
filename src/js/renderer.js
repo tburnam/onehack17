@@ -6,7 +6,7 @@
 function loadEntrypoint(entities) {
   var options = "<center><select id ='selectEntityDrop'>"
   entities.forEach(function(element) {
-    options = options + "\n<option>" + element.name + "</option>\n"
+    options = options + "\n<option value='" + element.id + "'>" + element.name + "</option>\n"
   });
   options = options + "</select></center><button onclick=\"selectEntity()\">Build entity</button>"
   document.getElementById("main-container").innerHTML = options
@@ -15,17 +15,17 @@ function loadEntrypoint(entities) {
 
 // Calls when a selection is made from the entity drop down
 function selectEntity(e) {
-  debugger;
   var selectedEntity = document.getElementById("selectEntityDrop").value;
-  document.getElementById("main-container").innerHTML = loadForm(selectedEntity);
+  retrieveRequiredAttributesUsingWebAPI(selectedEntity);
+}
+
+function loadForm(requiredFields){
+  document.getElementById("main-container").innerHTML = createForm(requiredFields);
   document.getElementsByTagName('body')[0].focus();
 }
 
 // Returns HTML for a form given an entity name
-function loadForm(entity) {
-
-  // TODO: Get required fields
-  requiredFields = ["Name", "Country", "Phone Number", "Type Code"]
+function createForm(requiredFields) {
 
   var form = ""
   requiredFields.forEach(function(element) {
@@ -51,7 +51,8 @@ function loadForm(entity) {
 
 // Utility method to create a form input line
 function createInput(item) {
-  return item + " | <button onClick=openJS(this)>Add JS</button><br>"
+  // " type: " + item.type + " Save as: " + item.logicalName
+  return item.displayName + " (" + item.type + ") | <button onClick=openJS(this)>Add JS</button><br>"
 }
 
 function openJS(a) {
@@ -109,8 +110,6 @@ function validateUser() {
   document.clientUsername = document.getElementById("clientUsername").value;
   document.clientPassword = document.getElementById("clientPassword").value;
   // TODO: validate is a correct CRM service.
-
-  // evaluateJs(retrieveAccountUsingWebAPI, loadSelectionScreen);
   // retrieve entities
   retrieveEntitiesUsingWebAPI();
 
@@ -148,7 +147,7 @@ function createEntityUsingWebAPI(entitySetName,entity) {
 function retrieveRequiredAttributesUsingWebAPI(entityId) {
     var inputParams = {};
     inputParams.requestType = "GET";
-    inputParams.url = document.clientUrl + "/api/data/v8.2/EntityDefinitions(" + entityId + ")?$select=LogicalName&$expand=Attributes($select=RequiredLevel,DisplayName)";
+    inputParams.url = document.clientUrl + "/api/data/v8.2/EntityDefinitions(" + entityId + ")/Attributes?$select=DisplayName,LogicalName,AttributeType&$filter=RequiredLevel/Value eq Microsoft.Dynamics.CRM.AttributeRequiredLevel'ApplicationRequired'";
     inputParams.username = document.clientUsername;
     inputParams.password = document.clientPassword;
     sendRequest(inputParams)
@@ -161,14 +160,22 @@ function retrieveRequiredAttributesUsingWebAPI(entityId) {
 
 function parseMetadataAttributes(metadataAttributes) {
   var attributes = [];
-  for (idx in metadataAttributes.Attributes) {
-    var attribute = metadataAttributes.Attributes[idx];
-    // console.log(entity, entity.DisplayName.UserLocalizedLabel, entity.DisplayName.UserLocalizedLabel.Label);
-    if (attribute.RequiredLevel.Value !== "None") {
-      attributes.push(attribute);
+  for (idx in metadataAttributes.value) {
+    var attribute = metadataAttributes.value[idx];
+    if (attribute.DisplayName.LocalizedLabels !== null) {
+      attributes.push({
+        displayName: attribute.DisplayName.LocalizedLabels[0].Label,
+        logicalName: attribute.LogicalName,
+        type: attribute.AttributeType
+      });
     }
   }
-  console.log(attributes);
+  attributes.sort(function(a,b) {
+    if(a.name < b.name) return -1;
+    if(a.name > b.name) return 1;
+    return 0;
+  });
+  loadForm(attributes);
 }
 
 function retrieveEntitiesUsingWebAPI() {
@@ -223,7 +230,7 @@ function sendRequest(inputParams) {
           req.onreadystatechange = null;
           if (this.status === 200) {
               var result = JSON.parse(this.response);
-              console.log(result);
+              console.log("from server", result);
               resolve(result);
           } else if (this.status == 204) {
             // Success but no response
