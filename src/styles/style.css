@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+  background-color: #002050;
+  color: rgb(241, 241, 241);
+  font-family: 'Open Sans', sans-serif;
+}
+
+#body {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+}
+#title {
+  font-size: 28px;
+}
+
+#random {
+  font-size: 10px;
+  float: right;
+  padding-top: 4px;
+}
+
+#crm {
+  height: 100px;
+}
+
+
+#footer {
+  position:absolute;
+  width: 100%;
+  height: auto;
+  bottom:0px;
+  right:50%;
+  left:50%;
+  margin-left:-150px;
+  font-size: 10px;
+  color: #345484;
+}
