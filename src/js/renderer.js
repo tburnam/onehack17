@@ -3,6 +3,10 @@
 // All of the Node.js APIs are available in this process.
 // ENTRY POINT
 document.crmDataStore = {}
+document.jsToAttributeRegister = {}
+
+
+document.crmDataStore = {"Name":"return [\"tyler\", \"alan\"]"}
 
 // Loads a selection box with given list
 function loadEntrypoint(entities) {
@@ -23,6 +27,7 @@ function selectEntity(e) {
   document.getElementsByTagName('body')[0].focus();
 }
 
+// Utility method that checks if document.crmDataStore has JS for each attribute
 function checkForSubmit() {
   for (var key in document.crmDataStore) {
     if (document.crmDataStore.hasOwnProperty(key)) {
@@ -33,6 +38,8 @@ function checkForSubmit() {
   }
   return true
 }
+
+
 
 // Returns HTML for a form given an entity name
 function loadForm(entity) {
@@ -51,23 +58,9 @@ function loadForm(entity) {
   return form
 }
 
-// Editor
-// <pre id="editor">function foo(items) {
-//     var i;
-//     for (i = 0; i &lt; items.length; i++) {
-//         alert("Ace Rocks " + items[i]);
-//     }
-// }</pre>
-// <script src="../../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-// <script>
-//     var editor = ace.edit("editor");
-//     editor.setTheme("ace/theme/monokai")
-//     editor.session.setMode("ace/mode/javascript");
-// </script>
-
 // Utility method to create a form input line
 function createInput(item) {
-  return item + " | <button onClick=openJS(this)>Add JS</button><br>"
+  return item + " <button onClick=openJS(this)>Add JS</button><br>"
 }
 
 function openJS(a) {
@@ -77,6 +70,8 @@ function openJS(a) {
   const remote = require('electron').remote;
   const BrowserWindow = remote.BrowserWindow;
   var jsPopup = new BrowserWindow({ width: 450, height: 600 });
+
+  document.jsToAttributeRegister[jsPopup.id] = a.previousSibling.data.trim();
 
   jsPopup.webContents.on('did-finish-load', ()=>{
    jsPopup.show();
@@ -98,7 +93,6 @@ function openJS(a) {
     jsPopup = null
   })
 }
-
 
 // Deprecated test method for bot-CRM access
 function test() {

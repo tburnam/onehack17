@@ -3,7 +3,6 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-
 const path = require('path')
 const url = require('url')
 
@@ -21,6 +20,8 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
+
+  debugger
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -54,6 +55,13 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+const ipcMain = require('electron').ipcMain;
+
+ipcMain.on('updateCode', function (e, windowId, code) {
+  console.log("Hello world")
+  global.sharedObj = {prop1: code};
 })
 
 // In this file you can include the rest of your app's specific main process
