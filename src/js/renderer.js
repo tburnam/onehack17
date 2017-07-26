@@ -2,6 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
+// ENTRY POINT
 // Loads a selection box with given list
 var entities = ["Account", "Work order", "Sale", "Product"]
 var options = "<center><select>"
@@ -10,13 +11,16 @@ entities.forEach(function(element) {
 });
 options = options + "</select></center><button onclick=\"selectEntity()\">Build entity</button>"
 document.getElementById("main-container").innerHTML = options
+document.getElementsByTagName('body')[0].focus();
 
-console.log(loadForm(["name", "title"]))
 
+// Calls when a selection is made from the entity drop down
 function selectEntity(e) {
   document.getElementById("main-container").innerHTML = loadForm("account");
+  document.getElementsByTagName('body')[0].focus();
 }
 
+// Returns HTML for a form given an entity name
 function loadForm(entity) {
 
   // TODO: Get required fields
@@ -26,15 +30,17 @@ function loadForm(entity) {
   requiredFields.forEach(function(element) {
     form = form + createInput(element)
   })
-  form = form + "<input type=\"submit\"></form>"
+  form = form + "Qty:<br><input type=\"number\"><br><input type=\"submit\"></form>"
   return form
 }
 
+// Utility method to create a form input line
 function createInput(item) {
   return item + ":<br><div id=\"input\"><input type=\"text\" name=" + item + "><input type=\"radio\"><div id=\"random\">Random?</div><br>"
 }
 
 
+// Deprecated test method for bot-CRM access
 function test() {
   var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   var phantomPath = "./binaries/spectrejs"

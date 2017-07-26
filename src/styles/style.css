@@ -4,6 +4,7 @@ body {
   background-color: #002050;
   color: rgb(241, 241, 241);
   font-family: 'Open Sans', sans-serif;
+  max-width: 500px;
 }
 
 #body {
@@ -25,15 +26,10 @@ body {
   height: 100px;
 }
 
-
 #footer {
-  position:absolute;
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  height: auto;
-  bottom:0px;
-  right:50%;
-  left:50%;
-  margin-left:-150px;
   font-size: 10px;
   color: #345484;
 }
