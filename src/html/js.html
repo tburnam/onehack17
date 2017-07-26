@@ -6,19 +6,22 @@
     <link rel="stylesheet" type="text/css" href="../styles/style.css">
   </head>
   <body>
-    <pre id="editor">
-// This is a boilerplate method signature
-// Your method should return a List of N elements
-function generate() {
-  const numberOfRecordsToCreate = 10;
-  const records = []
+    <div>
+      <pre id="editor">
+  // This is a boilerplate method signature
+  // Your method should return a List of N elements
+  function generate() {
+    const numberOfRecordsToCreate = 10;
+    const records = []
 
-  for (i = 0; i &lt; numberOfRecordsToCreate; i++) {
-      records.add(i);
-  }
+    for (i = 0; i &lt; numberOfRecordsToCreate; i++) {
+        records.add(i);
+    }
 
-  return records
-}</pre>
+    return records
+  }</pre>
+    </div>
+  <button id="submit">Submit</button>
     <script src="../../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("editor");

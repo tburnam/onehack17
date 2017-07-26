@@ -59,7 +59,7 @@ function openJS(a) {
 
   const remote = require('electron').remote;
   const BrowserWindow = remote.BrowserWindow;
-  var jsPopup = new BrowserWindow({ width: 400, height: 600 });
+  var jsPopup = new BrowserWindow({ width: 450, height: 600 });
 
   jsPopup.webContents.on('did-finish-load', ()=>{
    jsPopup.show();
